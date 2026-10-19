@@ -1,0 +1,5 @@
+# DAILY REELS: newest at the TOP. One reel per line:   link | caption
+# Paste the share link from Instagram, Facebook, TikTok or YouTube Shorts.
+# Lines starting with # are ignored. The website shows the first 12 reels.
+
+reels/competition-promo.mp4 | Competition promo · Sun 8 Nov

@@ -94,6 +94,41 @@
   .fee .amt { font-size: 34px; font-weight: 900; line-height: 1; white-space: nowrap; }
   .fee .amt em { font-style: normal; font-size: 15px; color: var(--gold); letter-spacing: .14em; margin-right: 6px; }
 
+  /* daily reels */
+  .reels { margin-top: 30px; }
+  .reels-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .reels-head b { display: block; font-size: 12px; letter-spacing: .2em; color: var(--orange); font-weight: 800; }
+  .reels-head h2 { margin: 2px 0 0; font-size: 24px; font-weight: 900; line-height: 1.1; }
+  .live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: var(--gold); white-space: nowrap; }
+  .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 0 rgba(255,59,48,.6); animation: ping 1.6s infinite; }
+  .reel-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 14px -16px 0; padding: 6px 16px 14px;
+                scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .reel-track::-webkit-scrollbar { display: none; }
+  .reel { position: relative; flex: 0 0 min(62vw, 240px); aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; scroll-snap-align: center;
+          background: radial-gradient(120% 80% at 50% 0%, #2a1a14, #0e0d10); border: 1px solid var(--line);
+          transform: scale(.94); opacity: .75; transition: transform .45s cubic-bezier(.2,.9,.2,1), opacity .45s; }
+  .reel.active { transform: none; opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,.55); }
+  .reel > button { all: unset; position: absolute; inset: 0; cursor: pointer; }
+  .reel img.poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reel .art { position: absolute; inset: 0; opacity: .5;
+               background: repeating-radial-gradient(circle at 50% 46%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
+                           radial-gradient(60% 40% at 50% 46%, var(--tint, rgba(255,90,31,.35)), transparent 70%); }
+  .reel.has-ext .cap { right: 64px; }
+  .reel .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 30%, transparent 55%, rgba(0,0,0,.85)); }
+  .reel .play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+                background: rgba(255,90,31,.92); display: grid; place-items: center; box-shadow: 0 0 0 0 rgba(255,90,31,.6); animation: ping 2s infinite; }
+  .reel .play::after { content: ""; margin-left: 5px; border-left: 20px solid #0A0A0C; border-top: 12px solid transparent; border-bottom: 12px solid transparent; }
+  .reel .chip { position: absolute; top: 10px; left: 10px; padding: 4px 9px; border-radius: 99px; font-size: 11px; font-weight: 800; color: #fff; background: rgba(0,0,0,.55);
+                backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .reel .new { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 99px; font-size: 10px; font-weight: 900; letter-spacing: .1em;
+               background: var(--gold); color: var(--ink); }
+  .reel .cap { position: absolute; left: 12px; right: 12px; bottom: 12px; font-weight: 800; font-size: 14px; line-height: 1.3; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+  .reel .ext { position: absolute; right: 10px; bottom: 10px; z-index: 2; font-size: 11px; font-weight: 800; color: #fff; text-decoration: none;
+               padding: 5px 8px; border-radius: 8px; background: rgba(0,0,0,.6); }
+  .reel iframe, .reel video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; object-fit: cover; }
+  .reel-hint { margin: 0; text-align: center; color: var(--dim); font-size: 12.5px; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(255,90,31,.55); } 70%, 100% { box-shadow: 0 0 0 16px rgba(255,90,31,0); } }
+
   /* form */
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px 18px 20px; margin-top: 22px;
           box-shadow: 0 30px 80px rgba(0,0,0,.45); }
@@ -167,95 +202,150 @@
   <header class="hero" id="hero">
     <div class="brand">SS SHOOTING RANGE · PESHAWAR</div>
     <div class="scene-wrap" id="sceneWrap">
-      <svg class="scene" id="scene" viewBox="0 0 400 250" role="img" aria-label="Cartoon shooter wearing ear and eye protection firing at a target">
+      <svg class="scene" id="scene" viewBox="0 0 400 260" role="img" aria-label="Animated shooter with ear and eye protection hitting a paper target at 15 yards and clay plates at 20 yards">
         <defs>
-          <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2420"/><stop offset="1" stop-color="#14110f"/></linearGradient>
-          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC23D" stop-opacity=".9"/><stop offset="1" stop-color="#FF5A1F" stop-opacity="0"/></radialGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0A0A0C"/><stop offset=".22" stop-color="#1c1626"/><stop offset=".45" stop-color="#4a2630"/>
+            <stop offset=".6" stop-color="#a5482c"/><stop offset=".68" stop-color="#e07a35"/>
+          </linearGradient>
+          <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd98a"/><stop offset=".35" stop-color="#ffb35c" stop-opacity=".85"/><stop offset="1" stop-color="#ff7a3d" stop-opacity="0"/></radialGradient>
+          <linearGradient id="berm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b3f2b"/><stop offset="1" stop-color="#2b1e15"/></linearGradient>
+          <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3627"/><stop offset=".5" stop-color="#2a1f17"/><stop offset="1" stop-color="#120d0a"/></linearGradient>
+          <radialGradient id="skin" cx=".62" cy=".38" r=".7"><stop offset="0" stop-color="#f3c9a1"/><stop offset=".7" stop-color="#d99a6c"/><stop offset="1" stop-color="#b9774d"/></radialGradient>
+          <linearGradient id="vest" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c9420f"/><stop offset=".55" stop-color="#ff6a2a"/><stop offset="1" stop-color="#ff8a4f"/></linearGradient>
+          <linearGradient id="jeans" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f2a40"/><stop offset="1" stop-color="#3a4d74"/></linearGradient>
+          <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a707c"/><stop offset=".35" stop-color="#2f333b"/><stop offset="1" stop-color="#15171b"/></linearGradient>
+          <radialGradient id="plate" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffa36b"/><stop offset=".6" stop-color="#f26422"/><stop offset="1" stop-color="#b8430f"/></radialGradient>
+          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#FFC23D" stop-opacity=".9"/><stop offset="1" stop-color="#FF5A1F" stop-opacity="0"/></radialGradient>
+          <radialGradient id="dust" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e9c29a" stop-opacity=".85"/><stop offset="1" stop-color="#e9c29a" stop-opacity="0"/></radialGradient>
+          <linearGradient id="fadeV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".14" stop-color="#fff"/><stop offset=".93" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <mask id="fade"><rect width="400" height="260" fill="url(#fadeV)"/></mask>
         </defs>
-        <!-- range backdrop -->
-        <g opacity=".55">
-          <rect x="250" y="24" width="4" height="200" fill="#26222a"/><rect x="390" y="24" width="4" height="200" fill="#26222a"/>
-          <rect x="246" y="20" width="152" height="8" rx="2" fill="#2e2a33"/>
-        </g>
-        <g transform="translate(200 22) rotate(-4)">
-          <rect x="-26" y="-11" width="52" height="22" rx="4" fill="#FFC23D"/>
-          <text x="0" y="5" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="11" fill="#0A0A0C">15 YDS</text>
-        </g>
-        <path d="M0 214 H400 V250 H0 Z" fill="url(#floor)"/>
-        <path d="M0 214 H400" stroke="#FF5A1F" stroke-opacity=".5" stroke-width="2"/>
-        <g stroke="#FFFFFF" stroke-opacity=".08" stroke-width="2"><path d="M40 230 H90 M140 230 H190 M240 230 H290 M340 230 H390"/></g>
 
-        <!-- target on stand -->
-        <g id="target">
-          <ellipse cx="336" cy="232" rx="34" ry="5" fill="#000" opacity=".45"/>
-          <g stroke="#8a5a2b" stroke-width="6" stroke-linecap="round"><path d="M322 230 L330 150 M350 230 L342 150 M326 192 H346"/></g>
-          <rect x="294" y="54" width="84" height="100" rx="4" fill="#efe9dc"/>
-          <circle cx="336" cy="100" r="36" fill="#efe9dc" stroke="#121212" stroke-width="1.5"/>
-          <circle cx="336" cy="100" r="28" fill="#efe9dc" stroke="#121212" stroke-width="1.5"/>
-          <circle cx="336" cy="100" r="21" fill="#121212"/>
-          <circle cx="336" cy="100" r="14" fill="#121212" stroke="#efe9dc" stroke-width="1.2"/>
-          <circle cx="336" cy="100" r="6.5" fill="#FF5A1F"/>
-          <text x="336" y="148" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="8" fill="#121212">SS RANGE</text>
-          <g id="holes"></g>
-          <circle id="hitRing" cx="336" cy="100" r="4" fill="none" stroke="#FFC23D" stroke-width="2" opacity="0"/>
-        </g>
-        <text id="score" x="336" y="44" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="16" fill="#FFC23D" opacity="0">+10</text>
-
-        <!-- bullet tracer -->
-        <line id="tracer" x1="226" y1="97" x2="336" y2="100" stroke="#FFE7B0" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
-
-        <!-- shooter (faces right, ear + eye protection on) -->
-        <g id="shooter">
-          <ellipse cx="102" cy="234" rx="48" ry="6" fill="#000" opacity=".45"/>
-          <g stroke="#2A2F3A" stroke-width="17" stroke-linecap="round"><path d="M97 166 L80 226 M110 166 L126 226"/></g>
-          <ellipse cx="76" cy="231" rx="14" ry="6" fill="#0d0d10"/><ellipse cx="132" cy="231" rx="14" ry="6" fill="#0d0d10"/>
-          <!-- back arm -->
-          <g id="armBack">
-            <path d="M108 106 L146 102" stroke="#1F2430" stroke-width="13" stroke-linecap="round"/>
-            <path d="M146 102 L178 99" stroke="#D9A07A" stroke-width="10" stroke-linecap="round"/>
+        <g mask="url(#fade)">
+          <!-- golden-hour sky -->
+          <rect width="400" height="180" fill="url(#sky)"/>
+          <circle id="sunGlow" cx="318" cy="128" r="80" fill="url(#sun)" opacity=".9"/>
+          <circle cx="318" cy="128" r="17" fill="#ffd27a"/>
+          <g id="clouds" fill="#ffb07a" opacity=".22">
+            <ellipse cx="80" cy="74" rx="44" ry="5"/><ellipse cx="250" cy="62" rx="60" ry="4"/><ellipse cx="360" cy="96" rx="34" ry="3.5"/>
           </g>
-          <rect x="82" y="98" width="38" height="72" rx="15" fill="#1F2430"/>
-          <rect x="84" y="103" width="34" height="50" rx="10" fill="#FF5A1F"/>
-          <path d="M101 103 V153" stroke="#0A0A0C" stroke-opacity=".25" stroke-width="2"/>
-          <text x="101" y="134" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#0A0A0C">SS</text>
-          <rect x="84" y="157" width="34" height="7" rx="2" fill="#0d0d10"/>
-          <!-- head -->
-          <g id="head">
-            <rect x="100" y="86" width="11" height="16" rx="4" fill="#D9A07A"/>
-            <circle cx="107" cy="76" r="18" fill="#E9B48C"/>
-            <path d="M90 80 Q92 98 108 98 Q122 97 125 82 Q118 90 108 90 Q97 90 90 80 Z" fill="#3b2a20"/>
-            <circle cx="125" cy="77" r="3.6" fill="#D9A07A"/>
-            <path d="M89 72 Q90 55 108 54 Q124 55 126 69 Z" fill="#16181d"/>
-            <path d="M116 66 L142 68 Q143 73 122 73 Z" fill="#FF5A1F"/>
-            <path d="M96 58 Q103 49 111 56" stroke="#FFC23D" stroke-width="3" fill="none"/>
-            <circle cx="101" cy="76" r="8" fill="#FFC23D" stroke="#8a5a00" stroke-width="1.5"/>
-            <circle cx="101" cy="76" r="3.5" fill="#8a5a00"/>
-            <rect x="113" y="71" width="13" height="8" rx="3" fill="#FFC23D" fill-opacity=".75" stroke="#16181d" stroke-width="1.5"/>
-            <circle cx="120" cy="75" r="1.6" fill="#16181d"/>
+          <path d="M0 150 C40 132 90 140 140 134 S230 122 280 132 S360 128 400 136 V170 H0 Z" fill="#2b1c24"/>
+          <!-- dirt backstop berm -->
+          <path d="M0 170 C60 148 120 156 180 150 S300 136 400 144 V178 H0 Z" fill="url(#berm)"/>
+          <!-- range floor with depth lines -->
+          <rect y="168" width="400" height="92" fill="url(#ground)"/>
+          <g stroke="#fff" stroke-opacity=".07" stroke-width="1.5">
+            <path d="M234.5 168 L-100 260 M260.7 168 L60 260 M286.9 168 L220 260 M313.1 168 L380 260 M339.3 168 L540 260"/>
           </g>
-          <!-- front arm + pistol (rotates on recoil) -->
-          <g id="armFront">
-            <path d="M112 110 L148 107" stroke="#262b38" stroke-width="13" stroke-linecap="round"/>
-            <path d="M148 107 L180 101" stroke="#E9B48C" stroke-width="10" stroke-linecap="round"/>
-            <path d="M181 98 L191 98 L189 117 L179 117 Z" fill="#2b2d33"/>
-            <rect x="176" y="90" width="44" height="11" rx="2.5" fill="#3a3d45"/>
-            <rect x="178" y="91" width="40" height="3" rx="1.5" fill="#7b8190"/>
-            <rect x="215" y="87" width="3" height="3" fill="#3a3d45"/>
-            <path d="M188 101 Q192 109 198 101" stroke="#2b2d33" stroke-width="2" fill="none"/>
-            <circle cx="183" cy="101" r="7" fill="#E9B48C"/>
-            <g id="flash" opacity="0">
-              <circle cx="232" cy="95" r="22" fill="url(#glow)"/>
-              <path d="M222 95 L232 84 L235 92 L250 89 L238 96 L250 103 L235 100 L232 107 Z" fill="#FFC23D"/>
-              <circle cx="228" cy="95" r="5" fill="#fff"/>
+          <path d="M0 168 H400" stroke="#FF5A1F" stroke-opacity=".35"/>
+          <g id="specks" fill="#ffd9a8"></g>
+
+          <!-- wind flag on the berm -->
+          <path d="M205 156 V106" stroke="#bfb6aa" stroke-width="1.6"/>
+          <path id="flag" fill="#FF5A1F"/>
+
+          <!-- 20 yd clay-plate rack (far) -->
+          <g id="rack">
+            <ellipse cx="357" cy="172" rx="26" ry="2.5" fill="#000" opacity=".4"/>
+            <g stroke="#6b4527" stroke-width="2.6" stroke-linecap="round"><path d="M338 172 V132 M376 172 V132"/></g>
+            <rect x="332" y="145" width="50" height="3.2" rx="1" fill="#8a5a33"/>
+            <rect x="334" y="130" width="46" height="2.4" rx="1" fill="#7a4e2c"/>
+            <g id="plates"></g>
+            <g transform="translate(357 180)"><rect x="-10" y="-5" width="20" height="10" rx="2" fill="#FFC23D"/>
+              <text y="2.6" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="6.4" fill="#0A0A0C">20 YDS</text></g>
+          </g>
+
+          <!-- 15 yd paper target (near) -->
+          <g id="target">
+            <ellipse cx="262" cy="229" rx="30" ry="3.5" fill="#000" opacity=".45"/>
+            <g stroke="#7a5230" stroke-width="4" stroke-linecap="round"><path d="M246 229 V150 M278 229 V150 M246 200 H278"/></g>
+            <rect x="231" y="137" width="62" height="76" rx="2" fill="#efe7d6"/>
+            <rect x="231" y="137" width="62" height="76" rx="2" fill="url(#sun)" opacity=".18"/>
+            <circle cx="262" cy="172" r="26" fill="none" stroke="#1a1a1a" stroke-width="1.1"/>
+            <circle cx="262" cy="172" r="20" fill="none" stroke="#1a1a1a" stroke-width="1.1"/>
+            <circle cx="262" cy="172" r="15" fill="#151515"/>
+            <circle cx="262" cy="172" r="10" fill="#151515" stroke="#efe7d6" stroke-width=".9"/>
+            <circle cx="262" cy="172" r="4.6" fill="#FF5A1F"/>
+            <text x="262" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="4.6" fill="#151515">SS SHOOTING RANGE</text>
+            <g id="holes"></g>
+          </g>
+          <g transform="translate(216 233)"><rect x="-12" y="-6" width="24" height="12" rx="2.5" fill="#FFC23D"/>
+            <text y="3" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="7.5" fill="#0A0A0C">15 YDS</text></g>
+
+          <g id="fx"></g>
+          <line id="tracer" stroke="#FFE7B0" stroke-width="2" stroke-linecap="round" opacity="0"/>
+
+          <!-- shooter -->
+          <g id="shooter">
+            <ellipse cx="116" cy="254" rx="54" ry="5" fill="#000" opacity=".5"/>
+            <g id="body">
+              <!-- back arm sits behind the torso -->
+              <g id="armB">
+                <path d="M-6 7 L32 7" stroke="#151a24" stroke-width="13" stroke-linecap="round"/>
+                <path d="M32 7 L64 3" stroke="#c98a5d" stroke-width="10" stroke-linecap="round"/>
+              </g>
+              <g fill="none" stroke="url(#jeans)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M108 188 L99 221 L90 246"/><path d="M123 188 L134 220 L139 246"/>
+              </g>
+              <path d="M80 243 H98 Q104 243 104 251 H78 Z" fill="#2a1a10"/>
+              <path d="M130 243 H147 Q154 243 154 251 H128 Z" fill="#3a2414"/>
+              <path d="M100 132 Q104 123 118 122 L132 124 Q139 128 137 141 L131 192 L103 194 Q97 170 100 132 Z" fill="#1d2330"/>
+              <path d="M103 137 Q106 128 118 127 L130 128 Q135 132 133 143 L128 183 L106 185 Q101 163 103 137 Z" fill="url(#vest)"/>
+              <path d="M117 128 L115 184" stroke="#0A0A0C" stroke-opacity=".22" stroke-width="1.4"/>
+              <rect x="106" y="160" width="9" height="11" rx="2" fill="#b23a0c"/><rect x="120" y="158" width="9" height="11" rx="2" fill="#b23a0c"/>
+              <circle cx="124" cy="143" r="6" fill="#0A0A0C"/>
+              <text x="124" y="145.6" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="6.5" fill="#FFC23D">SS</text>
+              <rect x="103" y="186" width="29" height="6" rx="2" fill="#0d0d10"/><rect x="114" y="186.5" width="6" height="5" rx="1" fill="#9a9a9a"/>
+              <rect x="117" y="109" width="10" height="17" rx="4" fill="#c98a5d"/>
+
+              <!-- head: pivots at the neck for nods and recoil -->
+              <g id="head">
+                <circle cx="124" cy="100" r="16.5" fill="url(#skin)"/>
+                <path d="M110 104 Q113 119 128 119.5 Q139.5 118.5 142 108 L141 103 Q134 108.5 126 106.5 Q117 105 110 104 Z" fill="#2b1d15"/>
+                <path d="M139 93 Q146 99 141 103 Q139 103 138.5 101 Z" fill="#d48f62"/>
+                <g id="eye"><ellipse cx="134.5" cy="96" rx="3.2" ry="2.6" fill="#f6efe4"/><circle cx="135.6" cy="96.1" r="1.65" fill="#1a1210"/><circle cx="136.1" cy="95.5" r=".45" fill="#fff"/></g>
+                <path id="brow" d="M130 91.2 Q135 89 139.6 91" stroke="#1f140e" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+                <path id="teeth" fill="#fff" opacity="0"/>
+                <path id="mouth" stroke="#e39a84" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+                <path d="M129 92.4 H142.4 Q143.4 99.4 138.2 100.4 H131 Q128.2 99.6 129 92.4 Z" fill="#ffb52e" fill-opacity=".42" stroke="#111" stroke-width="1.1"/>
+                <path d="M129 94 L117 95.5" stroke="#111" stroke-width="1.1"/>
+                <path d="M107 98 Q105.5 81.5 122 80.5 Q138.5 80.5 140.5 92 Z" fill="#161a24"/>
+                <path d="M134 90 Q147 88.5 153 92.6 Q146.5 96 136 95 Z" fill="#FF5A1F"/>
+                <path d="M112 96 Q111 83 121 81" stroke="#2a2d33" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <ellipse cx="115.5" cy="101" rx="6" ry="8" fill="#2a2d33" stroke="#FFC23D" stroke-width="1.4"/>
+                <ellipse cx="114.5" cy="101" rx="2.4" ry="4" fill="#3d4148"/>
+              </g>
+
+              <!-- front arm + pistol: pivot at the shoulder, bore along +x -->
+              <g id="armF">
+                <path d="M0 0 L34 1" stroke="#262d3c" stroke-width="14" stroke-linecap="round"/>
+                <path d="M34 1 L66 0" stroke="#e2a87e" stroke-width="10.5" stroke-linecap="round"/>
+                <path d="M65.5 -2 L76 -2 L72.5 14 L63.5 14 Z" fill="#1c1e22"/>
+                <path d="M61 -4.5 H94 V1 H61 Z" fill="#26292f"/>
+                <path d="M60.5 -11.5 H96.5 Q98 -11.5 98 -10 V-4.2 H60.5 Z" fill="url(#metal)"/>
+                <rect x="71" y="-10.4" width="9" height="2" rx=".6" fill="#0d0e10"/>
+                <rect x="94" y="-13.6" width="2" height="2.2" fill="#2f333b"/><rect x="61.5" y="-13.6" width="3" height="2.2" fill="#2f333b"/>
+                <path d="M72 1 Q73.5 7.5 81 1" stroke="#1c1e22" stroke-width="1.8" fill="none"/>
+                <circle cx="66.5" cy="3.2" r="7" fill="#d99a6c"/>
+                <circle cx="70" cy="-0.5" r="6.4" fill="#e2a87e"/>
+                <path d="M66 -3.6 L77 -4.6" stroke="#c98a5d" stroke-width="2.4" stroke-linecap="round"/>
+                <g id="flash" opacity="0">
+                  <circle cx="106" cy="-7.5" r="20" fill="url(#glow)"/>
+                  <path d="M98 -7.5 L107 -15 L109 -9.5 L121 -12 L111 -7 L121 -2 L109 -5 L107 0 Z" fill="#FFC23D"/>
+                  <circle cx="102" cy="-7.5" r="4" fill="#fff"/>
+                </g>
+              </g>
             </g>
+            <rect id="casing" x="-2.8" y="-1.3" width="5.6" height="2.6" rx=".8" fill="#e8b23a" opacity="0"/>
           </g>
-          <rect id="casing" x="-3" y="-1.5" width="6" height="3" rx="1" fill="#FFC23D" opacity="0"/>
-        </g>
 
-        <!-- comic burst -->
-        <g id="bang" opacity="0">
-          <path d="M0 -30 L9 -14 L28 -20 L18 -4 L34 8 L14 10 L12 28 L0 15 L-14 30 L-15 11 L-35 9 L-19 -4 L-29 -21 L-10 -14 Z" fill="#FFC23D" stroke="#0A0A0C" stroke-width="2.5" stroke-linejoin="round"/>
-          <text x="0" y="5" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="13" fill="#0A0A0C">BANG!</text>
+          <!-- pop-ups -->
+          <text id="pop" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="13" fill="#FFC23D" stroke="#0A0A0C" stroke-width=".6" paint-order="stroke" opacity="0"></text>
+          <g id="bubble" opacity="0">
+            <path d="M-38 -16 H38 Q46 -16 46 -8 V6 Q46 14 38 14 H-14 L-24 24 L-22 14 H-38 Q-46 14 -46 6 V-8 Q-46 -16 -38 -16 Z" fill="#F7F4EE" stroke="#0A0A0C" stroke-width="1.6"/>
+            <text y="3.6" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#0A0A0C">Your turn! 🎯</text>
+          </g>
         </g>
       </svg>
     </div>
@@ -277,6 +367,15 @@
     <div class="fact" data-reveal="left" style="--d:.16s"><b>INCLUDED</b><strong>Lunch & drinks</strong><small>Refreshments provided</small></div>
     <div class="fact" data-reveal="right" style="--d:.24s"><b>BONUS</b><strong>2 days practice</strong><small>No range entry fee</small></div>
     <div class="fact fee" data-reveal style="--d:.1s"><div><b>REGISTRATION FEE</b><small>Per person</small></div><div class="amt"><em>PKR</em><span id="feeNum">3,000</span></div></div>
+  </section>
+
+  <section class="reels" id="reels" hidden aria-label="Daily reels">
+    <div class="reels-head" data-reveal>
+      <div><b>WATCH THE ACTION</b><h2>Daily reels from the range</h2></div>
+      <span class="live">NEW DAILY</span>
+    </div>
+    <div class="reel-track" id="reelTrack"></div>
+    <p class="reel-hint">Swipe for more · Tap to play</p>
   </section>
 
   <section class="card" id="register" data-reveal>
@@ -410,74 +509,247 @@ function showErrors(bad) {
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---------- hero: cartoon shooter, 5-shot loop ----------
+// ---------- hero: shooter runs a full string: 3 shots on paper (15 yd), 3 clay plates (20 yd) ----------
 (() => {
   const NS = 'http://www.w3.org/2000/svg', $ = id => document.getElementById(id);
-  const CYCLE = 6.4, SHOTS = [0.9, 1.7, 2.5, 3.3, 4.1];
-  const HOLES = [[338, 97], [331, 103], [341, 104], [334, 95], [337, 101]];
-  const SHOULDER = '112 110';
-  const holes = HOLES.map(([x, y]) => {
-    const c = document.createElementNS(NS, 'circle');
-    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 3.2);
-    c.setAttribute('fill', '#060606'); c.setAttribute('stroke', '#FF5A1F'); c.setAttribute('stroke-width', 1.2);
-    $('holes').appendChild(c); return c;
-  });
-  const el = { armF: $('armFront'), armB: $('armBack'), head: $('head'), shooter: $('shooter'), flash: $('flash'), tracer: $('tracer'),
-               target: $('target'), ring: $('hitRing'), casing: $('casing'), bang: $('bang'), score: $('score') };
+  const mk = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.appendChild(n); return n; };
   const set = (n, a, v) => n.setAttribute(a, v);
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const deg = r => r * 180 / Math.PI;
+
+  const S = [122, 132];                         // shoulder pivot
+  const MUZZLE = [98, -7.5], PORT = [76, -11];   // arm-local bore line + ejection port
+  const aimAt = ([x, y]) => {                    // angle that puts the bore line (7.5 above the pivot) through a point
+    const dx = x - S[0], dy = y - S[1], r = Math.hypot(dx, dy);
+    return deg(Math.atan2(dy, dx) + Math.asin(7.5 / r));
+  };
+  const local = ([lx, ly], a) => { const c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180);
+    return [S[0] + lx * c - ly * s, S[1] + lx * s + ly * c]; };
+
+  const HITS = [[264, 169], [258.5, 174.5], [266, 175]];           // paper impacts
+  const PLATES = [[344, 139.5], [357, 139.5], [370, 139.5]];
+  const LOW = 40;
+  const CYCLE = 11;
+  const PAPER = [1.5, 2.1, 2.7], PLATE = [3.85, 4.45, 5.05];
+  const SHOTS = [...PAPER.map((t, i) => ({ t, at: HITS[i], plate: -1 })), ...PLATE.map((t, i) => ({ t, at: PLATES[i], plate: i }))];
+  const aimPaper = aimAt([262, 172]);
+  // gun angle keyframes: low ready → paper → swing to plates → low ready
+  const KEYS = [[0, LOW], [0.55, LOW], [1.15, aimPaper], [3.0, aimPaper], [3.5, aimAt(PLATES[0])], [3.95, aimAt(PLATES[0])],
+                [4.2, aimAt(PLATES[1])], [4.55, aimAt(PLATES[1])], [4.8, aimAt(PLATES[2])], [5.4, aimAt(PLATES[2])], [6.1, LOW], [CYCLE, LOW]];
+  const angleAt = t => { for (let i = 1; i < KEYS.length; i++) if (t <= KEYS[i][0]) {
+    const [t0, a0] = KEYS[i - 1], [t1, a1] = KEYS[i]; return a0 + (a1 - a0) * ease(clamp((t - t0) / (t1 - t0))); } return LOW; };
+
+  // build dynamic pieces
+  const holes = HITS.map(([x, y]) => mk('circle', { cx: x, cy: y, r: 2.6, fill: '#050505', stroke: '#FF5A1F', 'stroke-width': .9, opacity: 0 }, $('holes')));
+  const plates = PLATES.map(([x, y]) => { const g = mk('g', {}, $('plates'));
+    mk('circle', { cx: x, cy: y, r: 5.6, fill: 'url(#plate)', stroke: '#7a2c08', 'stroke-width': .7 }, g);
+    mk('circle', { cx: x - .8, cy: y - .8, r: 2.4, fill: '#ffb27f', opacity: .7 }, g); return g; });
+  const fx = $('fx');
+  const shards = PLATES.map((p, i) => Array.from({ length: 8 }, (_, k) => {
+    const r = Math.sin((i + 1) * 91.7 + k * 13.3) * 43758.5, rr = r - Math.floor(r);
+    return { n: mk('path', { d: 'M0 -2.4 L2.6 1.6 L-2.2 1.8 Z', fill: k % 3 ? '#f26422' : '#b8430f', opacity: 0 }, fx),
+             vx: (rr - .5) * 120, vy: -(40 + ((rr * 7) % 1) * 70), spin: (rr - .5) * 1600 };
+  }));
+  const puffs = PLATES.map(() => mk('circle', { r: 4, fill: 'url(#dust)', opacity: 0 }, fx));
+  const ring = mk('circle', { r: 3, fill: 'none', stroke: '#FFC23D', 'stroke-width': 1.6, opacity: 0 }, fx);
+  const specks = Array.from({ length: 12 }, (_, i) => mk('circle', { r: .6 + (i % 3) * .35, opacity: .35 }, $('specks')));
+
+  const el = { armF: $('armF'), armB: $('armB'), body: $('body'), head: $('head'), eye: $('eye'), brow: $('brow'), mouth: $('mouth'), teeth: $('teeth'),
+               flash: $('flash'), tracer: $('tracer'), target: $('target'), casing: $('casing'), pop: $('pop'), bubble: $('bubble'),
+               flag: $('flag'), clouds: $('clouds'), sun: $('sunGlow') };
 
   function frame(t) {
     const tc = t % CYCLE;
-    let last = -1; SHOTS.forEach((s, i) => { if (tc >= s) last = i; });
-    const d = last >= 0 ? tc - SHOTS[last] : 99;
-    const rec = d < 0.04 ? d / 0.04 : Math.max(0, 1 - (d - 0.04) / 0.28);
-    const aim = Math.sin(t * 5.3) * 0.6 + Math.sin(t * 3.1) * 0.4;           // tiny natural sway between shots
-    const ang = -13 * rec * (2 - rec) + aim * (1 - rec);
-    set(el.armF, 'transform', `rotate(${ang.toFixed(2)} ${SHOULDER})`);
-    set(el.armB, 'transform', `rotate(${(ang * 0.9).toFixed(2)} ${SHOULDER})`);
-    set(el.head, 'transform', `translate(${(-2 * rec).toFixed(2)} ${(Math.sin(t * 2) * 0.6).toFixed(2)})`);
-    set(el.shooter, 'transform', `translate(${(-2.5 * rec).toFixed(2)} 0)`);
-    set(el.flash, 'opacity', d < 0.1 ? 1 - d / 0.1 : 0);
-    set(el.flash, 'transform', `translate(232 95) scale(${(1.25 + d * 6).toFixed(2)}) translate(-232 -95)`);
-    set(el.tracer, 'opacity', d < 0.07 ? 0.9 * (1 - d / 0.07) : 0);
-    if (last >= 0) { set(el.tracer, 'x2', HOLES[last][0]); set(el.tracer, 'y2', HOLES[last][1]); }
+    // most recent shot
+    let last = -1; SHOTS.forEach((s, i) => { if (tc >= s.t) last = i; });
+    const shot = SHOTS[last], d = last >= 0 ? tc - shot.t : 99;
+    const rec = d < .035 ? d / .035 : Math.max(0, 1 - (d - .035) / .3);        // recoil impulse 0..1
+    const aiming = tc > 1.1 && tc < 5.5;
+    const sway = aiming ? Math.sin(t * 4.7) * .35 + Math.sin(t * 2.3) * .25 : 0;
+    const ang = angleAt(tc) - 9 * rec * (2 - rec) + sway * (1 - rec);
+    const arm = `translate(${S[0] - 2.5 * rec} ${S[1] + .6 * rec}) rotate(${ang.toFixed(2)})`;
+    set(el.armF, 'transform', arm); set(el.armB, 'transform', arm);
 
-    const fade = tc > 5.6 ? Math.max(0, 1 - (tc - 5.6) / 0.5) : 1;
-    holes.forEach((h, i) => {
-      const a = tc - SHOTS[i] - 0.05;
-      const sc = a < 0 ? 0 : Math.min(1, a / 0.1) * (1 + 0.6 * Math.max(0, 1 - a / 0.2));
-      set(h, 'opacity', a < 0 ? 0 : fade);
-      set(h, 'transform', `translate(${HOLES[i][0]} ${HOLES[i][1]}) scale(${sc.toFixed(2)}) translate(${-HOLES[i][0]} ${-HOLES[i][1]})`);
-    });
-    const hd = d - 0.05;
-    const wob = hd > 0 && hd < 0.7 ? 3.2 * Math.sin(hd * 28) * Math.exp(-hd * 6) : 0;
-    set(el.target, 'transform', `rotate(${wob.toFixed(2)} 336 230)`);
-    if (hd > 0 && hd < 0.4) {
-      set(el.ring, 'cx', HOLES[last][0]); set(el.ring, 'cy', HOLES[last][1]);
-      set(el.ring, 'r', 4 + hd * 70); set(el.ring, 'opacity', 1 - hd / 0.4);
-    } else set(el.ring, 'opacity', 0);
-    set(el.score, 'opacity', hd > 0 && hd < 0.7 ? Math.min(1, hd * 8) * (1 - hd / 0.7) : 0);
-    set(el.score, 'transform', `translate(0 ${hd > 0 ? (-hd * 22).toFixed(1) : 0})`);
+    // body: breathing, weight shift into the gun when aiming, push back on recoil
+    const breathe = Math.sin(t * 2.1) * .8;
+    const lean = aiming ? 1.5 : 0;
+    set(el.body, 'transform', `translate(${(lean - 2 * rec).toFixed(2)} ${(breathe * .35).toFixed(2)})`);
 
-    if (d < 0.75) {                                                          // ejected casing arcs up and back
-      const x = 198 - 70 * d, y = 88 - 120 * d + 300 * d * d;
-      set(el.casing, 'opacity', Math.min(1, (0.75 - d) * 4));
-      set(el.casing, 'transform', `translate(${x.toFixed(1)} ${Math.min(y, 228).toFixed(1)}) rotate(${(d * 1100).toFixed(0)})`);
+    // ---- expressions ----
+    const smile = clamp((tc - 5.35) / .35) * (1 - clamp((tc - 8.6) / .5));
+    const focus = clamp((tc - .9) / .3) * (1 - clamp((tc - 5.3) / .3));
+    const blinkT = (t % 3.7);
+    const blink = blinkT < .12 || (d < .09 && shot) ? 1 : 0;                      // natural blink + flinch on each shot
+    const eyeOpen = blink ? .12 : 1 - .45 * focus + .08 * smile;
+    set(el.eye, 'transform', `translate(0 96) scale(1 ${eyeOpen.toFixed(2)}) translate(0 -96)`);
+    const browDrop = 1.6 * focus - 1.4 * smile + (d < .2 ? .8 * (1 - d / .2) : 0);
+    set(el.brow, 'transform', `translate(0 ${browDrop.toFixed(2)}) rotate(${(4 * focus - 3 * smile).toFixed(2)} 135 90)`);
+    const curve = 108 + 3.2 * smile - .6 * focus, corner = 108 - 1.8 * smile;
+    set(el.mouth, 'd', `M133.6 ${(108 - .2 * focus).toFixed(2)} Q137 ${curve.toFixed(2)} 140.4 ${corner.toFixed(2)}`);
+    set(el.teeth, 'd', `M134.4 ${(108.2).toFixed(2)} Q137 ${(108 + 2.6 * smile).toFixed(2)} 139.8 ${(108 - 1.4 * smile).toFixed(2)} Z`);
+    set(el.teeth, 'opacity', clamp(smile * 1.5 - .3).toFixed(2));
+    // head: tilts down to the sights while aiming, nods after the string, kicks back on recoil
+    const nod = tc > 6.0 && tc < 6.9 ? Math.sin((tc - 6.0) / .9 * Math.PI * 2) * 5 : 0;
+    const headRot = 5 * focus + nod - 3 * rec;
+    set(el.head, 'transform', `rotate(${headRot.toFixed(2)} 122 118) translate(${(-1.2 * rec).toFixed(2)} 0)`);
+
+    // ---- shot effects ----
+    const muzzle = local(MUZZLE, ang);
+    set(el.flash, 'opacity', d < .1 ? 1 - d / .1 : 0);
+    set(el.flash, 'transform', `translate(106 -7.5) scale(${(1.15 + d * 6).toFixed(2)}) translate(-106 7.5)`);
+    if (d < .07) {
+      set(el.tracer, 'x1', muzzle[0].toFixed(1)); set(el.tracer, 'y1', muzzle[1].toFixed(1));
+      set(el.tracer, 'x2', shot.at[0]); set(el.tracer, 'y2', shot.at[1]); set(el.tracer, 'opacity', .9 * (1 - d / .07));
+    } else set(el.tracer, 'opacity', 0);
+
+    if (d < .9) {                                                                // brass ejects up and back, bounces once
+      const p0 = local(PORT, angleAt(shot.t));
+      let x = p0[0] - 55 * d, y = p0[1] - 95 * d + 330 * d * d;
+      if (y > 250) y = 250 - Math.abs(Math.sin((d - .5) * 9)) * 4;
+      set(el.casing, 'opacity', clamp((.9 - d) * 3));
+      set(el.casing, 'transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(d * 1300).toFixed(0)})`);
     } else set(el.casing, 'opacity', 0);
 
-    const big = last === 0 || last === 4;
-    if (big && d < 0.55) {
-      const p = Math.min(1, d / 0.12);
-      set(el.bang, 'opacity', d > 0.4 ? (0.55 - d) / 0.15 : 1);
-      set(el.bang, 'transform', `translate(262 40) rotate(-10) scale(${(p * (1 + 0.25 * Math.sin(p * Math.PI))).toFixed(2)})`);
-    } else set(el.bang, 'opacity', 0);
+    const holeFade = 1 - clamp((tc - 8.6) / .5);
+    holes.forEach((h, i) => { const a = tc - PAPER[i] - .04;
+      set(h, 'opacity', a < 0 ? 0 : holeFade);
+      const sc = a < 0 ? 0 : Math.min(1, a / .08) * (1 + .7 * Math.max(0, 1 - a / .18));
+      set(h, 'transform', `translate(${HITS[i][0]} ${HITS[i][1]}) scale(${sc.toFixed(2)}) translate(${-HITS[i][0]} ${-HITS[i][1]})`); });
+    // paper target shudders on each hit
+    const hp = shot && shot.plate < 0 ? d - .04 : 99;
+    set(el.target, 'transform', hp > 0 && hp < .6 ? `rotate(${(2.4 * Math.sin(hp * 30) * Math.exp(-hp * 7)).toFixed(2)} 262 229)` : '');
+
+    // plates: shatter on hit, rebuild at the end of the loop
+    PLATES.forEach(([x, y], i) => {
+      const a = tc - PLATE[i] - .05;
+      const back = clamp((tc - (9.0 + i * .12)) / .25);
+      const sc = a < 0 ? 1 : back * (1 + .25 * Math.sin(back * Math.PI));         // pops back in with a little overshoot
+      set(plates[i], 'transform', `translate(${x} ${y}) scale(${sc.toFixed(2)}) translate(${-x} ${-y})`);
+      shards[i].forEach(s => {
+        if (a < 0 || a > 1.1) { set(s.n, 'opacity', 0); return; }
+        const fx = x + s.vx * a, fy = Math.min(171, y + s.vy * a + 210 * a * a);
+        set(s.n, 'opacity', clamp(1.3 - a));
+        set(s.n, 'transform', `translate(${fx.toFixed(1)} ${fy.toFixed(1)}) rotate(${(s.spin * a).toFixed(0)})`);
+      });
+      if (a >= 0 && a < .8) { set(puffs[i], 'cx', x); set(puffs[i], 'cy', y); set(puffs[i], 'r', (4 + a * 26).toFixed(1)); set(puffs[i], 'opacity', (.85 * (1 - a / .8)).toFixed(2)); }
+      else set(puffs[i], 'opacity', 0);
+    });
+
+    // impact ring + score pop
+    const ha = d - .04;
+    if (shot && ha > 0 && ha < .35) {
+      set(ring, 'cx', shot.at[0]); set(ring, 'cy', shot.at[1]); set(ring, 'r', (3 + ha * 50).toFixed(1)); set(ring, 'opacity', (1 - ha / .35).toFixed(2));
+    } else set(ring, 'opacity', 0);
+    if (shot && ha > 0 && ha < .75) {
+      el.pop.textContent = shot.plate >= 0 ? 'SMASH!' : '+10';
+      const px = shot.plate >= 0 ? 357 : 262, py = (shot.plate >= 0 ? 120 : 130) - ha * 18;
+      set(el.pop, 'x', px); set(el.pop, 'y', py.toFixed(1));
+      set(el.pop, 'opacity', (Math.min(1, ha * 10) * (1 - ha / .75)).toFixed(2));
+    } else set(el.pop, 'opacity', 0);
+
+    // "Your turn!" after the string is done
+    const bIn = clamp((tc - 6.3) / .25), bOut = clamp((tc - 8.5) / .25);
+    const bs = bIn * (1 + .18 * Math.sin(bIn * Math.PI)) * (1 - bOut);
+    set(el.bubble, 'opacity', (bIn * (1 - bOut)).toFixed(2));
+    set(el.bubble, 'transform', `translate(176 58) scale(${bs.toFixed(3)}) translate(0 ${(Math.sin(t * 3) * 1.2).toFixed(2)})`);
+
+    // ambient: flag in the wind, drifting clouds and dust, breathing sun
+    let top = 'M205 106', bot = '';
+    for (let k = 0; k <= 6; k++) { const x = 205 + k * 4.2, w = Math.sin(t * 6 - k * .9) * (k * .45);
+      top += ` L${x.toFixed(1)} ${(106 + w).toFixed(2)}`; bot = ` L${x.toFixed(1)} ${(118 + w * 1.1).toFixed(2)}` + bot; }
+    set(el.flag, 'd', top + bot + ' Z');
+    set(el.clouds, 'transform', `translate(${((t * 3) % 60 - 30).toFixed(1)} 0)`);
+    set(el.sun, 'opacity', (.82 + Math.sin(t * .8) * .08).toFixed(2));
+    specks.forEach((s, i) => { const k = (t * (4 + i % 4) + i * 37) % 420;
+      set(s, 'cx', ((k + i * 31) % 400).toFixed(1)); set(s, 'cy', (160 - ((k * .12 + i * 9) % 60)).toFixed(1)); });
   }
 
-  if (REDUCED) { frame(4.5); return; }                                       // still image: all 5 holes, no motion
-  let running = true, t0 = performance.now();
+  if (REDUCED) { frame(5.2); return; }                                       // still frame: paper hit, plates smashed
+  let running = true; const t0 = performance.now();
   new IntersectionObserver(([e]) => { running = e.isIntersecting; if (running) requestAnimationFrame(loop); }).observe($('scene'));
   function loop(now) { if (!running) return; frame((now - t0) / 1000); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
+})();
+
+// ---------- daily reels: read reels.txt (newest first), one "link | caption" per line ----------
+(() => {
+  const PLATFORMS = {
+    video: ['▶ SS Range', 'linear-gradient(135deg,#FF5A1F,#FFC23D)'],
+    youtube: ['YouTube', '#FF0000'], instagram: ['Instagram', 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)'],
+    facebook: ['Facebook', '#1877F2'], tiktok: ['TikTok', 'linear-gradient(135deg,#25F4EE,#000 45%,#FE2C55)'],
+  };
+  function parse(raw) {
+    if (/^reels\/[\w.-]+\.(mp4|webm|mov)$/i.test(raw)) return { type: 'video', src: raw, poster: raw.replace(/\.\w+$/, '.jpg'), link: raw };
+    let u; try { u = new URL(raw); } catch { return null; }
+    if (u.protocol !== 'https:') return null;
+    const host = u.hostname.replace(/^(www|m|web)\./, ''), parts = u.pathname.split('/').filter(Boolean);
+    const ok = v => v && /^[\w-]{4,40}$/.test(v) ? v : null;
+    if (host === 'youtube.com' || host === 'youtu.be') {
+      const id = ok(host === 'youtu.be' ? parts[0] : parts[0] === 'shorts' ? parts[1] : u.searchParams.get('v'));
+      return id && { type: 'youtube', link: u.href, poster: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+                     embed: `https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&rel=0` };
+    }
+    if (host === 'instagram.com') {
+      const i = parts.findIndex(x => /^(reel|reels|p|tv)$/.test(x)), code = ok(parts[i + 1]);
+      return i >= 0 && code && { type: 'instagram', link: u.href, embed: `https://www.instagram.com/reel/${code}/embed/` };
+    }
+    if (host === 'facebook.com' || host === 'fb.watch')
+      return { type: 'facebook', link: u.href, embed: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(u.href)}&show_text=false&autoplay=true` };
+    if (host === 'tiktok.com') {
+      const i = parts.indexOf('video'), id = i >= 0 && /^\d{6,25}$/.test(parts[i + 1]) ? parts[i + 1] : null;
+      return id && { type: 'tiktok', link: u.href, embed: `https://www.tiktok.com/embed/v2/${id}` };
+    }
+    return null;
+  }
+
+  const track = document.getElementById('reelTrack');
+  let playing = null;
+  function facade(card) {
+    const r = card._reel; card.replaceChildren();
+    const btn = document.createElement('button'); btn.type = 'button'; btn.setAttribute('aria-label', `Play reel: ${r.caption || PLATFORMS[r.type][0]}`);
+    if (r.poster) { const img = new Image(); img.className = 'poster'; img.loading = 'lazy'; img.alt = ''; img.src = r.poster; img.onerror = () => img.remove(); btn.append(img); }
+    if (!r.poster) { const art = document.createElement('span'); art.className = 'art'; btn.append(art); }
+    const shade = document.createElement('span'); shade.className = 'shade';
+    const play = document.createElement('span'); play.className = 'play';
+    const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = PLATFORMS[r.type][0]; chip.style.background = PLATFORMS[r.type][1];
+    const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = r.caption;
+    btn.append(shade, play, chip, cap);
+    if (r.isNew) { const n = document.createElement('span'); n.className = 'new'; n.textContent = 'NEW'; btn.append(n); }
+    btn.addEventListener('click', () => start(card));
+    card.append(btn);
+    card.classList.toggle('has-ext', r.type !== 'video');
+    if (r.type !== 'video') { const a = document.createElement('a'); a.className = 'ext'; a.href = r.link; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'Open ↗'; card.append(a); }
+  }
+  function start(card) {
+    if (playing && playing !== card) facade(playing);                    // only one reel plays at a time
+    const r = card._reel; card.replaceChildren(); playing = card;
+    if (r.type === 'video') {
+      const v = document.createElement('video'); v.src = r.src; v.poster = r.poster; v.controls = true; v.playsInline = true; v.autoplay = true;
+      card.append(v); v.play().catch(() => {});
+    } else {
+      const f = document.createElement('iframe'); f.src = r.embed; f.title = r.caption || PLATFORMS[r.type][0];
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write'; f.allowFullscreen = true; f.loading = 'lazy';
+      card.append(f);
+    }
+  }
+
+  fetch('reels.txt', { cache: 'no-cache' }).then(r => r.ok ? r.text() : '').then(txt => {
+    const items = txt.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith('#')).slice(0, 12).map((l, i) => {
+      const at = l.indexOf('|'), raw = (at < 0 ? l : l.slice(0, at)).trim(), caption = at < 0 ? '' : l.slice(at + 1).trim().slice(0, 90);
+      const r = parse(raw); return r && Object.assign(r, { caption, isNew: i === 0 });
+    }).filter(Boolean);
+    if (!items.length) return;
+    items.forEach(r => { const card = document.createElement('div'); card.className = 'reel'; card._reel = r; facade(card); track.append(card); });
+    document.getElementById('reels').hidden = false;
+    // the card nearest the centre of the strip grows to full size
+    const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('active', e.intersectionRatio > .6)),
+                                        { root: track, threshold: [0, .6, 1] });
+    track.querySelectorAll('.reel').forEach(c => io.observe(c));
+    // pause anything playing once it scrolls out of view
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting && playing) { facade(playing); playing = null; } }).observe(track);
+  }).catch(() => {});
 })();
 
 // ---------- scroll effects: parallax hero, progress bar, reveals, sticky CTA ----------
