@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pistol Shooting Competition · SS Shooting Range Peshawar</title>
+<meta name="description" content="Register for the Pistol Shooting Competition at SS Shooting Range, University Road, Peshawar. PKR 3,000 per person · Lunch included · 2 days free practice.">
+<meta name="theme-color" content="#0A0A0C">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🎯 Pistol Shooting Competition · SS Shooting Range">
+<meta property="og:description" content="2 segments · 15 & 20 yards · Lunch + 2 days free practice · PKR 3,000. Limited slots, register now!">
+<meta property="og:url" content="https://hamadkan138-hs.github.io/ss-shooting-range/">
+<meta property="og:image" content="https://hamadkan138-hs.github.io/ss-shooting-range/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A0A0C; --panel: #141317; --line: rgba(255,255,255,.12);
+    --white: #F7F4EE; --dim: rgba(247,244,238,.64); --orange: #FF5A1F; --orange-d: #E04A12; --gold: #FFC23D;
+    --ok: #34D399; --err: #FF6B6B; --r: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--white);
+    background:
+      radial-gradient(900px 600px at 50% -10%, rgba(255,90,31,.20), transparent 70%),
+      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px) 0 0 / 60px 60px,
+      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px) 0 0 / 60px 60px,
+      var(--ink);
+    min-height: 100vh; line-height: 1.5;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 48px; }
+  .brand { text-align: center; padding: 28px 0 0; font-weight: 700; font-size: 13px; letter-spacing: .28em; color: var(--dim); }
+  .brand::after { content: ""; display: block; width: 44px; height: 3px; background: var(--orange); margin: 10px auto 0; }
+
+  /* hero */
+  .hero { text-align: center; padding: 28px 0 8px; }
+  .reticle { width: 112px; height: 112px; margin: 0 auto 18px; animation: spin-in 1.1s cubic-bezier(.2,.9,.2,1) both; }
+  .reticle .hole { transform-origin: 50px 50px; animation: pop .35s 1s cubic-bezier(.3,1.6,.5,1) both; }
+  .eyebrow { color: var(--gold); font-weight: 800; letter-spacing: .22em; font-size: 14px; }
+  h1 { margin: 10px 0 0; font-weight: 900; line-height: .95; font-size: clamp(46px, 13vw, 72px); letter-spacing: -.01em; }
+  h1 .bar { display: inline-block; margin-top: 10px; background: var(--orange); color: var(--ink); padding: 6px 18px 8px;
+            transform: skewX(-8deg); font-size: .62em; }
+  h1 .bar span { display: inline-block; transform: skewX(8deg); }
+  .lede { color: var(--dim); margin: 16px auto 0; max-width: 420px; }
+  .rise { animation: rise .7s cubic-bezier(.2,.9,.2,1) both; }
+  .d1 { animation-delay: .15s } .d2 { animation-delay: .3s } .d3 { animation-delay: .45s } .d4 { animation-delay: .6s }
+
+  /* facts */
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 26px 0 0; }
+  .fact { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 14px 12px; }
+  .fact b { display: block; font-size: 12px; letter-spacing: .16em; color: var(--orange); font-weight: 800; }
+  .fact strong { display: block; font-size: 19px; font-weight: 800; margin-top: 2px; }
+  .fact small { color: var(--dim); font-size: 13px; }
+  .fee { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+         background: linear-gradient(135deg, rgba(255,90,31,.18), rgba(255,194,61,.08)); border-color: rgba(255,90,31,.45); }
+  .fee .amt { font-size: 34px; font-weight: 900; line-height: 1; white-space: nowrap; }
+  .fee .amt em { font-style: normal; font-size: 15px; color: var(--gold); letter-spacing: .14em; margin-right: 6px; }
+  .slots { display: none; margin: 14px 0 0; text-align: center; font-weight: 700; font-size: 14px; color: var(--gold); }
+  .slots .meter { height: 6px; border-radius: 6px; background: rgba(255,255,255,.1); margin-top: 8px; overflow: hidden; }
+  .slots .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--orange)); width: 0; transition: width 1.2s cubic-bezier(.2,.9,.2,1); }
+
+  /* form */
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px 18px 20px; margin-top: 22px;
+          box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+  .card h2 { margin: 0; font-size: 24px; font-weight: 900; }
+  .card > p { margin: 4px 0 14px; color: var(--dim); font-size: 14px; }
+  label.f { display: block; margin-top: 14px; font-weight: 700; font-size: 14px; }
+  label.f span.opt { color: var(--dim); font-weight: 500; }
+  input[type=text], input[type=tel], select {
+    width: 100%; margin-top: 6px; padding: 14px 14px; font: 600 16px/1.2 inherit; font-family: inherit; color: var(--white);
+    background: #0E0D10; border: 1.5px solid var(--line); border-radius: 14px; outline: none; transition: border-color .2s, box-shadow .2s;
+    appearance: none; -webkit-appearance: none;
+  }
+  select { background-image: linear-gradient(45deg, transparent 50%, var(--dim) 50%), linear-gradient(135deg, var(--dim) 50%, transparent 50%);
+           background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px; }
+  input:focus, select:focus { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,90,31,.18); }
+  .invalid input, .invalid select { border-color: var(--err); }
+  .msg { display: none; color: var(--err); font-size: 13px; margin-top: 6px; font-weight: 600; }
+  .invalid .msg { display: block; }
+  .pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .pills label { position: relative; }
+  .pills input { position: absolute; opacity: 0; inset: 0; }
+  .pills span { display: block; text-align: center; padding: 12px 6px; border-radius: 12px; border: 1.5px solid var(--line);
+                font-weight: 700; font-size: 14px; background: #0E0D10; transition: all .15s; cursor: pointer; }
+  .pills input:checked + span { border-color: var(--orange); background: rgba(255,90,31,.14); color: #fff; }
+  .pills input:focus-visible + span { box-shadow: 0 0 0 4px rgba(255,90,31,.25); }
+  .check { display: flex; gap: 12px; align-items: flex-start; margin-top: 18px; font-size: 14px; color: var(--dim); cursor: pointer; }
+  .check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--orange); flex: none; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button.cta {
+    position: relative; overflow: hidden; width: 100%; margin-top: 20px; padding: 18px; border: 0; border-radius: 16px; cursor: pointer;
+    font: 900 18px/1 inherit; font-family: inherit; letter-spacing: .06em; color: var(--ink); background: var(--orange);
+    box-shadow: 0 14px 40px rgba(255,90,31,.4); transition: transform .12s, background .2s;
+  }
+  button.cta:hover { background: var(--orange-d); }
+  button.cta:active { transform: scale(.98); }
+  button.cta::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-20deg); animation: shine 3.2s 1.5s infinite; }
+  button.cta[disabled] { opacity: .7; cursor: progress; }
+  .fine { text-align: center; color: var(--dim); font-size: 12.5px; margin-top: 12px; }
+
+  /* success */
+  .done { display: none; text-align: center; padding: 10px 4px 4px; }
+  .done.show { display: block; animation: rise .6s cubic-bezier(.2,.9,.2,1) both; }
+  .done .tick { width: 76px; height: 76px; border-radius: 50%; margin: 6px auto 14px; display: grid; place-items: center;
+                background: rgba(52,211,153,.14); border: 2px solid var(--ok); }
+  .done h2 { font-size: 26px; }
+  .done p { color: var(--dim); margin: 8px 0 0; }
+  .ref { display: inline-block; margin-top: 14px; padding: 8px 14px; border-radius: 10px; border: 1px dashed var(--line); font-weight: 800; letter-spacing: .12em; }
+  a.wa { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; padding: 18px; border-radius: 16px;
+         background: #25D366; color: #06210F; font-weight: 900; font-size: 17px; text-decoration: none; box-shadow: 0 14px 40px rgba(37,211,102,.35); }
+  a.wa:active { transform: scale(.98); }
+
+  /* venue */
+  .venue { margin-top: 22px; display: grid; gap: 10px; }
+  .venue a, .venue div { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: var(--r); background: var(--panel);
+             border: 1px solid var(--line); color: var(--white); text-decoration: none; }
+  .venue svg { flex: none; }
+  .venue small { display: block; color: var(--dim); font-size: 13px; }
+  .venue strong { font-weight: 800; }
+  footer { text-align: center; color: var(--dim); font-size: 12px; margin-top: 28px; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes spin-in { from { opacity: 0; transform: scale(2.4) rotate(-90deg); } to { opacity: 1; transform: none; } }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  @keyframes shine { 0% { left: -60%; } 30%, 100% { left: 130%; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">SS SHOOTING RANGE · PESHAWAR</div>
+
+  <header class="hero">
+    <svg class="reticle" viewBox="0 0 100 100" aria-hidden="true">
+      <g fill="none" stroke="#FF5A1F">
+        <circle cx="50" cy="50" r="34" stroke-width="2.5"/><circle cx="50" cy="50" r="21" stroke-width="1.4"/>
+        <path d="M50 4v30M50 66v30M4 50h30M66 50h30" stroke-width="2.5"/>
+      </g>
+      <g class="hole"><circle cx="50" cy="50" r="7" fill="#060606" stroke="#FF5A1F" stroke-width="1.5"/></g>
+    </svg>
+    <div class="eyebrow rise">ARE YOU READY?</div>
+    <h1 class="rise d1">PISTOL<br>SHOOTING<br><span class="bar"><span>COMPETITION</span></span></h1>
+    <p class="lede rise d2">A two-stage precision event. Test your marksmanship, enjoy lunch with fellow shooters and practise free for 2 days.</p>
+  </header>
+
+  <section class="facts rise d3" aria-label="Event details">
+    <div class="fact"><b>SEGMENT 01</b><strong>Target sheet</strong><small>5 shots · 15 yards</small></div>
+    <div class="fact"><b>SEGMENT 02</b><strong>Clay plates</strong><small>5 shots · 20 yards</small></div>
+    <div class="fact"><b>INCLUDED</b><strong>Lunch & drinks</strong><small>Refreshments provided</small></div>
+    <div class="fact"><b>BONUS</b><strong>2 days practice</strong><small>No range entry fee</small></div>
+    <div class="fact fee"><div><b>REGISTRATION FEE</b><small>Per person</small></div><div class="amt"><em>PKR</em>3,000</div></div>
+  </section>
+  <div class="slots" id="slots"><span id="slotsText"></span><div class="meter"><i id="slotsBar"></i></div></div>
+
+  <section class="card rise d4" id="register">
+    <form id="form" novalidate>
+      <h2>Reserve your slot</h2>
+      <p>Takes 30 seconds. We'll confirm on WhatsApp.</p>
+
+      <label class="f" data-field="name">Full name
+        <input type="text" name="name" autocomplete="name" maxlength="80" placeholder="e.g. Ali Khan" required>
+        <span class="msg">Please enter your full name.</span>
+      </label>
+
+      <label class="f" data-field="phone">WhatsApp number
+        <input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="16" placeholder="03XX-XXXXXXX" required>
+        <span class="msg">Enter a valid Pakistani mobile number (03XX-XXXXXXX).</span>
+      </label>
+
+      <label class="f" data-field="city">City
+        <input type="text" name="city" autocomplete="address-level2" maxlength="40" value="Peshawar" required>
+        <span class="msg">Please enter your city.</span>
+      </label>
+
+      <div class="f" data-field="experience" style="margin-top:14px">
+        <span style="font-weight:700;font-size:14px">Shooting experience</span>
+        <div class="pills" role="radiogroup">
+          <label><input type="radio" name="experience" value="Beginner"><span>Beginner</span></label>
+          <label><input type="radio" name="experience" value="Intermediate"><span>Intermediate</span></label>
+          <label><input type="radio" name="experience" value="Experienced"><span>Experienced</span></label>
+        </div>
+        <span class="msg">Please pick one.</span>
+      </div>
+
+      <label class="f" data-field="practice">Free practice days <span class="opt">(preference)</span>
+        <select name="practice">
+          <option value="Weekdays">Weekdays</option>
+          <option value="Weekend">Weekend</option>
+          <option value="Any day">Any day works</option>
+        </select>
+      </label>
+
+      <label class="f" data-field="payment">How will you pay?
+        <select name="payment" required>
+          <option value="" selected disabled>Select payment method</option>
+          <option>Cash at the range</option>
+          <option>JazzCash</option>
+          <option>Easypaisa</option>
+          <option>Bank transfer</option>
+        </select>
+        <span class="msg">Please choose a payment method.</span>
+      </label>
+
+      <label class="hp" aria-hidden="true">Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+
+      <label class="check" data-field="consent">
+        <input type="checkbox" name="consent" required>
+        <span>I am 18 or older and agree to follow all range safety rules and the instructions of range officers.</span>
+      </label>
+      <span class="msg" id="consentMsg" style="margin-left:34px">Please confirm to continue.</span>
+
+      <button class="cta" type="submit" id="submit">REGISTER NOW →</button>
+      <div class="fine">Your slot is confirmed once the fee is received.</div>
+    </form>
+
+    <div class="done" id="done" aria-live="polite">
+      <div class="tick"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>You're almost in!</h2>
+      <p>Last step: send your details to us on WhatsApp so we can confirm your slot and share payment details.</p>
+      <div class="ref" id="ref"></div>
+      <a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.7 15.6 2.2 13.8 2.2 12 2.2 6.6 6.6 2.2 12 2.2S21.8 6.6 21.8 12 17.4 21.8 12 21.8zM12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6c1.8 1 3.8 1.5 5.8 1.5 6.6 0 12-5.4 12-12S18.6 0 12 0z"/></svg>
+        Send on WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <section class="venue" aria-label="Venue and contact">
+    <a href="https://www.google.com/maps/search/?api=1&query=SS+Shooting+Range+University+Road+Peshawar" target="_blank" rel="noopener">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#FF5A1F" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
+      <span><strong>SS Shooting Range</strong><small>Opposite Gul Haji Plaza, University Road, Peshawar</small></span>
+    </a>
+    <a href="tel:+923005730642">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFC23D" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+      <span><strong>0300-5730642</strong><small>Call or WhatsApp for queries</small></span>
+    </a>
+  </section>
+
+  <footer>Limited slots available · Register today and showcase your shooting skills!</footer>
+</div>
+
+<script>
+/* ---------- settings: edit these ---------- */
+const CONFIG = {
+  // Paste the Google Apps Script "Web app" URL here (see README). Leave empty for WhatsApp-only mode.
+  SHEET_ENDPOINT: '',
+  WHATSAPP: '923005730642',   // international format, no + or dashes
+  TOTAL_SLOTS: 0,             // e.g. 40 to show a "slots remaining" bar (needs SHEET_ENDPOINT); 0 hides it
+};
+/* ------------------------------------------ */
+
+const form = document.getElementById('form');
+const btn = document.getElementById('submit');
+
+function normalisePhone(v) {
+  let d = v.replace(/\D/g, '');
+  if (d.startsWith('0092')) d = d.slice(4);
+  else if (d.startsWith('92')) d = d.slice(2);
+  if (d.startsWith('3') && d.length === 10) d = '0' + d;
+  return /^03\d{9}$/.test(d) ? d.slice(0, 4) + '-' + d.slice(4) : null;
+}
+
+function validate(data) {
+  const bad = [];
+  if (data.name.trim().length < 3) bad.push('name');
+  if (!normalisePhone(data.phone)) bad.push('phone');
+  if (!data.city.trim()) bad.push('city');
+  if (!data.experience) bad.push('experience');
+  if (!data.payment) bad.push('payment');
+  if (!data.consent) bad.push('consent');
+  return bad;
+}
+
+function showErrors(bad) {
+  form.querySelectorAll('[data-field]').forEach(el => el.classList.toggle('invalid', bad.includes(el.dataset.field)));
+  document.getElementById('consentMsg').style.display = bad.includes('consent') ? 'block' : 'none';
+  if (bad.length) {
+    const first = form.querySelector(`[data-field="${bad[0]}"]`);
+    first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    first.querySelector('input,select')?.focus({ preventScroll: true });
+  }
+}
+
+form.addEventListener('input', e => e.target.closest('[data-field]')?.classList.remove('invalid'));
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const fd = new FormData(form);
+  const data = {
+    name: (fd.get('name') || '').toString(),
+    phone: (fd.get('phone') || '').toString(),
+    city: (fd.get('city') || '').toString(),
+    experience: (fd.get('experience') || '').toString(),
+    practice: (fd.get('practice') || '').toString(),
+    payment: (fd.get('payment') || '').toString(),
+    consent: fd.get('consent') === 'on',
+  };
+  const bad = validate(data);
+  showErrors(bad);
+  if (bad.length) return;
+  if (fd.get('company')) return; // honeypot: bots fill hidden fields
+
+  btn.disabled = true; btn.textContent = 'REGISTERING…';
+  const ref = 'SS-' + Date.now().toString(36).slice(-5).toUpperCase();
+  const phone = normalisePhone(data.phone);
+  const payload = { ref, ...data, phone, name: data.name.trim(), city: data.city.trim(), consent: 'Yes', page: location.href };
+
+  if (CONFIG.SHEET_ENDPOINT) {
+    try {
+      // text/plain body avoids a CORS preflight; Apps Script still receives it in e.postData.contents
+      await fetch(CONFIG.SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+    } catch (_) { /* WhatsApp step below still delivers the registration */ }
+  }
+
+  const msg = [
+    '🎯 *Pistol Shooting Competition: Registration*',
+    `Ref: ${ref}`,
+    `Name: ${payload.name}`,
+    `WhatsApp: ${phone}`,
+    `City: ${payload.city}`,
+    `Experience: ${payload.experience}`,
+    `Practice days: ${payload.practice}`,
+    `Payment: ${payload.payment}`,
+    '',
+    'Please confirm my slot. Thank you!'
+  ].join('\n');
+  const wa = `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`;
+
+  document.getElementById('waBtn').href = wa;
+  document.getElementById('ref').textContent = 'REF ' + ref;
+  form.style.display = 'none';
+  const done = document.getElementById('done');
+  done.classList.add('show');
+  done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// optional live "slots remaining" bar
+(async () => {
+  if (!CONFIG.SHEET_ENDPOINT || !CONFIG.TOTAL_SLOTS) return;
+  try {
+    const r = await fetch(CONFIG.SHEET_ENDPOINT + '?action=count');
+    const { count } = await r.json();
+    const left = Math.max(0, CONFIG.TOTAL_SLOTS - count);
+    document.getElementById('slots').style.display = 'block';
+    document.getElementById('slotsText').textContent = left ? `🔥 Only ${left} of ${CONFIG.TOTAL_SLOTS} slots left` : 'All slots are booked: message us for the waiting list';
+    requestAnimationFrame(() => document.getElementById('slotsBar').style.width = (100 * count / CONFIG.TOTAL_SLOTS) + '%');
+  } catch (_) {}
+})();
+</script>
+</body>
+</html>
