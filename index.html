@@ -61,9 +61,6 @@
          background: linear-gradient(135deg, rgba(255,90,31,.18), rgba(255,194,61,.08)); border-color: rgba(255,90,31,.45); }
   .fee .amt { font-size: 34px; font-weight: 900; line-height: 1; white-space: nowrap; }
   .fee .amt em { font-style: normal; font-size: 15px; color: var(--gold); letter-spacing: .14em; margin-right: 6px; }
-  .slots { display: none; margin: 14px 0 0; text-align: center; font-weight: 700; font-size: 14px; color: var(--gold); }
-  .slots .meter { height: 6px; border-radius: 6px; background: rgba(255,255,255,.1); margin-top: 8px; overflow: hidden; }
-  .slots .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--orange)); width: 0; transition: width 1.2s cubic-bezier(.2,.9,.2,1); }
 
   /* form */
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px 18px 20px; margin-top: 22px;
@@ -157,12 +154,11 @@
     <div class="fact"><b>BONUS</b><strong>2 days practice</strong><small>No range entry fee</small></div>
     <div class="fact fee"><div><b>REGISTRATION FEE</b><small>Per person</small></div><div class="amt"><em>PKR</em>3,000</div></div>
   </section>
-  <div class="slots" id="slots"><span id="slotsText"></span><div class="meter"><i id="slotsBar"></i></div></div>
 
   <section class="card rise d4" id="register">
     <form id="form" novalidate>
       <h2>Reserve your slot</h2>
-      <p>Takes 30 seconds. We'll confirm on WhatsApp.</p>
+      <p>Takes 30 seconds. Your details are sent to us on WhatsApp.</p>
 
       <label class="f" data-field="name">Full name
         <input type="text" name="name" autocomplete="name" maxlength="80" placeholder="e.g. Ali Khan" required>
@@ -222,8 +218,8 @@
 
     <div class="done" id="done" aria-live="polite">
       <div class="tick"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <h2>You're almost in!</h2>
-      <p>Last step: send your details to us on WhatsApp so we can confirm your slot and share payment details.</p>
+      <h2>Almost done!</h2>
+      <p>Tap <b>Send</b> in WhatsApp so we receive your registration. We'll reply to confirm your slot and share payment details.</p>
       <div class="ref" id="ref"></div>
       <a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.7 15.6 2.2 13.8 2.2 12 2.2 6.6 6.6 2.2 12 2.2S21.8 6.6 21.8 12 17.4 21.8 12 21.8zM12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6c1.8 1 3.8 1.5 5.8 1.5 6.6 0 12-5.4 12-12S18.6 0 12 0z"/></svg>
@@ -249,15 +245,11 @@
 <script>
 /* ---------- settings: edit these ---------- */
 const CONFIG = {
-  // Paste the Google Apps Script "Web app" URL here (see README). Leave empty for WhatsApp-only mode.
-  SHEET_ENDPOINT: '',
-  WHATSAPP: '923005730642',   // international format, no + or dashes
-  TOTAL_SLOTS: 0,             // e.g. 40 to show a "slots remaining" bar (needs SHEET_ENDPOINT); 0 hides it
+  WHATSAPP: '923005730642',   // registrations go to this number: international format, no + or dashes
 };
 /* ------------------------------------------ */
 
 const form = document.getElementById('form');
-const btn = document.getElementById('submit');
 
 function normalisePhone(v) {
   let d = v.replace(/\D/g, '');
@@ -290,7 +282,7 @@ function showErrors(bad) {
 
 form.addEventListener('input', e => e.target.closest('[data-field]')?.classList.remove('invalid'));
 
-form.addEventListener('submit', async e => {
+form.addEventListener('submit', e => {
   e.preventDefault();
   const fd = new FormData(form);
   const data = {
@@ -307,18 +299,9 @@ form.addEventListener('submit', async e => {
   if (bad.length) return;
   if (fd.get('company')) return; // honeypot: bots fill hidden fields
 
-  btn.disabled = true; btn.textContent = 'REGISTERING…';
   const ref = 'SS-' + Date.now().toString(36).slice(-5).toUpperCase();
   const phone = normalisePhone(data.phone);
-  const payload = { ref, ...data, phone, name: data.name.trim(), city: data.city.trim(), consent: 'Yes', page: location.href };
-
-  if (CONFIG.SHEET_ENDPOINT) {
-    try {
-      // text/plain body avoids a CORS preflight; Apps Script still receives it in e.postData.contents
-      await fetch(CONFIG.SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true,
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-    } catch (_) { /* WhatsApp step below still delivers the registration */ }
-  }
+  const payload = { ...data, name: data.name.trim(), city: data.city.trim() };
 
   const msg = [
     '🎯 *Pistol Shooting Competition: Registration*',
@@ -340,20 +323,10 @@ form.addEventListener('submit', async e => {
   const done = document.getElementById('done');
   done.classList.add('show');
   done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Open WhatsApp straight away; the button above stays as a fallback if the user comes back.
+  location.href = wa;
 });
 
-// optional live "slots remaining" bar
-(async () => {
-  if (!CONFIG.SHEET_ENDPOINT || !CONFIG.TOTAL_SLOTS) return;
-  try {
-    const r = await fetch(CONFIG.SHEET_ENDPOINT + '?action=count');
-    const { count } = await r.json();
-    const left = Math.max(0, CONFIG.TOTAL_SLOTS - count);
-    document.getElementById('slots').style.display = 'block';
-    document.getElementById('slotsText').textContent = left ? `🔥 Only ${left} of ${CONFIG.TOTAL_SLOTS} slots left` : 'All slots are booked: message us for the waiting list';
-    requestAnimationFrame(() => document.getElementById('slotsBar').style.width = (100 * count / CONFIG.TOTAL_SLOTS) + '%');
-  } catch (_) {}
-})();
 </script>
 </body>
 </html>
