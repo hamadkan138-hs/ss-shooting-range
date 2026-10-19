@@ -3,7 +3,7 @@
 Live page: https://hamadkan138-hs.github.io/ss-shooting-range/
 
 When someone fills in the form, WhatsApp opens with their details already typed in,
-addressed to **0300-5730642**. They tap **Send**, and you confirm the slot and payment in that chat.
+addressed to **0300-5909040**. They tap **Send**, and you confirm the slot and payment in that chat.
 Each registration carries a reference number (e.g. `SS-LK3KO`) so you can track it.
 
 ## Changing details
